@@ -554,9 +554,10 @@ class AccountSettingsPage extends React.Component {
                 : this.props.intl.formatMessage(messages['account.settings.field.full.name.help.text'])
             }
             isEditable={
-              verifiedName
-                ? this.isEditable('verifiedName') && this.isEditable('name')
-                : this.isEditable('name')
+              false
+              // verifiedName
+              //   ? this.isEditable('verifiedName') && this.isEditable('name')
+              //   : this.isEditable('name')
             }
             isGrayedOut={
               verifiedName && !this.isEditable('verifiedName')
@@ -602,7 +603,10 @@ class AccountSettingsPage extends React.Component {
               messages['account.settings.field.email.help.text'],
               { siteName: getConfig().SITE_NAME },
             )}
-            isEditable={this.isEditable('email')}
+            isEditable={
+              false
+              //this.isEditable('email')
+            }
             {...editableFieldProps}
           />
           {this.renderSecondaryEmailField(editableFieldProps)}
