@@ -85,6 +85,7 @@ class AccountSettingsPage extends React.Component {
       visibility: null,
       user_id: this.context.authenticatedUser.userId,
     });
+    this.addScriptHeadTag();
   }
 
   componentDidUpdate(prevProps) {
@@ -100,6 +101,19 @@ class AccountSettingsPage extends React.Component {
       }
     }
   }
+
+  addScriptHeadTag() {
+		const script = document.createElement("script");
+		script.type = "application/json";
+		script.innerHTML = `gtag('config', 'G-XDGY5ZHRR0', {
+      'user_id': ${this.context.authenticatedUser.userId} 
+      });`;
+		script.async = true;
+		document.head.appendChild(script);
+		return () => {
+		  document.head.removeChild(script);
+		}
+	}
 
   // NOTE: We need 'locale' for the memoization in getLocalizedTimeZoneOptions.  Don't remove it!
   // eslint-disable-next-line no-unused-vars
