@@ -554,11 +554,7 @@ class AccountSettingsPage extends React.Component {
                 ? this.renderFullNameHelpText(verifiedName.status, verifiedName.proctored_exam_attempt_id)
                 : this.props.intl.formatMessage(messages['account.settings.field.full.name.help.text'])
             }
-            isEditable={
-              verifiedName
-                ? this.isEditable('verifiedName') && this.isEditable('name')
-                : this.isEditable('name')
-            }
+            isEditable={false}
             isGrayedOut={
               verifiedName && !this.isEditable('verifiedName')
             }
@@ -777,12 +773,12 @@ class AccountSettingsPage extends React.Component {
           <ThirdPartyAuth />
         </div>
 
-        <div className="account-section pt-3 mb-5" id="delete-account" ref={this.navLinkRefs['#delete-account']}>
+        {/* <div className="account-section pt-3 mb-5" id="delete-account" ref={this.navLinkRefs['#delete-account']}>
           <DeleteAccount
             isVerifiedAccount={this.props.isActive}
             hasLinkedTPA={hasLinkedTPA}
           />
-        </div>
+        </div> */}
 
       </>
     );
