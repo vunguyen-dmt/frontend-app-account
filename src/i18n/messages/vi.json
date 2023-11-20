@@ -84,7 +84,7 @@
     "account.settings.field.education.levels.jhs": "Trung học cơ sở / cấp hai",
     "account.settings.field.education.levels.el": "Tiểu học",
     "account.settings.field.education.levels.none": "Giáo dục không chính quy",
-    "account.settings.field.education.levels.o": "Chương trinh giáo dục khác",
+    "account.settings.field.education.levels.other": "Chương trinh giáo dục khác",
     "account.settings.field.gender": "Giới tính",
     "account.settings.field.gender.empty": "Thêm giới tính",
     "account.settings.field.gender.options.empty": "Chọn giới tính",
