@@ -10,10 +10,6 @@
           src="<%= process.env.MARKETING_SITE_BASE_URL %>/optimizelyjs/<%= process.env.OPTIMIZELY_PROJECT_ID %>.js"
         ></script>
       <% } %>
-      <!-- Global site tag (gtag.js) - Google Analytics -->
-      <script>
-        var measurementId="G-XDGY5ZHRR0",timeOut=0;setTimeout(function(f,b,c,g,e){var a=b.createElement(c);a.src="https://www.googletagmanager.com/gtag/js?id="+e,a.async=!0;var d=b.getElementsByTagName(c)[0];d.parentNode.insertBefore(a,d)}(window,document,"script","dataLayer",measurementId),timeOut),setTimeout(function(){function a(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],a("js",new Date);var b="",c=/edx-user-info.+"username\\":\s\\"(.+?)\\"/gm.exec(document.cookie);c?.length>=2?(a("config",measurementId,{user_id:b=c[1]}),a("set","user_properties",{username:b})):a("config",measurementId)},timeOut)
-      </script>
   </head>
   <body>
     <div id="root"></div>
