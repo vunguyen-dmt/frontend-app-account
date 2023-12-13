@@ -16,6 +16,8 @@ import zhcnMessages from './messages/zh_CN.json';
 import dedeCAMessages from './messages/de_DE.json';
 import ititCAMessages from './messages/it_IT.json';
 import ptptCAMessages from './messages/pt_PT.json';
+import viMessages from './messages/vi.json';
+
 // no need to import en messages-- they are in the defaultMessage field
 
 const appMessages = {
@@ -34,6 +36,7 @@ const appMessages = {
   'de-de': dedeCAMessages,
   'it-it': ititCAMessages,
   'pt-pt': ptptCAMessages,
+  vi: viMessages,
 };
 
 export default [
