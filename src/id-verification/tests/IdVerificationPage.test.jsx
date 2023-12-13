@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { MemoryRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import {
   render, act, screen, fireEvent,
@@ -20,37 +19,36 @@ jest.mock('../VerifiedNameContext', () => {
     VerifiedNameContextProvider: jest.fn(({ children }) => children),
   };
 });
-jest.mock('../panels/ReviewRequirementsPanel', () => function () {
+jest.mock('../panels/ReviewRequirementsPanel', () => function ReviewRequirementsPanelMock() {
   return <></>;
 });
-jest.mock('../panels/RequestCameraAccessPanel', () => function () {
+jest.mock('../panels/RequestCameraAccessPanel', () => function RequestCameraAccessPanelMock() {
   return <></>;
 });
-jest.mock('../panels/PortraitPhotoContextPanel', () => function () {
+jest.mock('../panels/PortraitPhotoContextPanel', () => function PortraitPhotoContextPanelMock() {
   return <></>;
 });
-jest.mock('../panels/TakePortraitPhotoPanel', () => function () {
+jest.mock('../panels/TakePortraitPhotoPanel', () => function TakePortraitPhotoPanelMock() {
   return <></>;
 });
-jest.mock('../panels/IdContextPanel', () => function () {
+jest.mock('../panels/IdContextPanel', () => function IdContextPanelMock() {
   return <></>;
 });
-jest.mock('../panels/GetNameIdPanel', () => function () {
+jest.mock('../panels/GetNameIdPanel', () => function GetNameIdPanelMock() {
   return <></>;
 });
-jest.mock('../panels/TakeIdPhotoPanel', () => function () {
+jest.mock('../panels/TakeIdPhotoPanel', () => function TakeIdPhotoPanelMock() {
   return <></>;
 });
-jest.mock('../panels/SummaryPanel', () => function () {
+jest.mock('../panels/SummaryPanel', () => function SummaryPanelMock() {
   return <></>;
 });
-jest.mock('../panels/SubmittedPanel', () => function () {
+jest.mock('../panels/SubmittedPanel', () => function SubmittedPanelMock() {
   return <></>;
 });
 
 const IntlIdVerificationPage = injectIntl(IdVerificationPage);
 const mockStore = configureStore();
-const history = createMemoryHistory();
 
 describe('IdVerificationPage', () => {
   selectors.mockClear();
@@ -60,9 +58,8 @@ describe('IdVerificationPage', () => {
     intl: {},
   };
   it('decodes and stores course_id', async () => {
-    history.push(`/?course_id=${encodeURIComponent('course-v1:edX+DemoX+Demo_Course')}`);
     await act(async () => render((
-      <Router history={history}>
+      <Router initialEntries={[`/?course_id=${encodeURIComponent('course-v1:edX+DemoX+Demo_Course')}`]}>
         <IntlProvider locale="en">
           <Provider store={store}>
             <IntlIdVerificationPage {...props} />
@@ -77,9 +74,8 @@ describe('IdVerificationPage', () => {
   });
 
   it('stores `next` value', async () => {
-    history.push('/?next=dashboard');
     await act(async () => render((
-      <Router history={history}>
+      <Router initialEntries={['/?next=dashboard']}>
         <IntlProvider locale="en">
           <Provider store={store}>
             <IntlIdVerificationPage {...props} />
@@ -93,9 +89,8 @@ describe('IdVerificationPage', () => {
     );
   });
   it('shows modal on click of button', async () => {
-    history.push('/?next=dashboard');
     await act(async () => render((
-      <Router history={history}>
+      <Router initialEntries={['/?next=dashboard']}>
         <IntlProvider locale="en">
           <Provider store={store}>
             <IntlIdVerificationPage {...props} />
@@ -108,9 +103,8 @@ describe('IdVerificationPage', () => {
     expect(screen.getByTestId('Id-modal')).toBeInTheDocument();
   });
   it('shows modal on click of button', async () => {
-    history.push('/?next=dashboard');
     await act(async () => render((
-      <Router history={history}>
+      <Router initialEntries={['/?next=dashboard']}>
         <IntlProvider locale="en">
           <Provider store={store}>
             <IntlIdVerificationPage {...props} />

@@ -63,16 +63,17 @@ Examples:
 
 The fully-qualified URL to the support page or email to request the support from in the target environment.
 
+``ENABLE_ACCOUNT_DELETION``
+
+Example: ``'false'`` | ``''`` (empty strings are true)
+
+Enable the account deletion option, defaults to true.
+To disable account deletion set ``ENABLE_ACCOUNT_DELETION`` to ``'false'`` (string), otherwise it will default to true.
+
 edX-specific Environment Variables
 **********************************
 
 Furthermore, there are several edX-specific environment variables that enable integrations with closed-source services private to the edX organization, and are unsupported in Open edX.  Enabling these environment variables will result in undefined behavior in Open edX installations:
-
-``COACHING_ENABLED``
-
-Example: ``true`` | ``''`` (empty strings are falsy)
-
-Enables support for a section of the micro-frontend that helps users arrange for coaching sessions.  Integrates with a private coaching plugin and is only used by edx.org.
 
 ``ENABLE_DEMOGRAPHICS_COLLECTION``
 

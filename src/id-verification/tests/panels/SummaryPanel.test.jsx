@@ -1,7 +1,6 @@
 /* eslint-disable no-import-assign */
 import React from 'react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { BrowserRouter as Router } from 'react-router-dom';
 import {
   render, cleanup, act, screen, fireEvent, waitFor,
 } from '@testing-library/react';
@@ -21,8 +20,6 @@ dataService.submitIdVerification = jest.fn().mockReturnValue({ success: true });
 
 const IntlSummaryPanel = injectIntl(SummaryPanel);
 
-const history = createMemoryHistory();
-
 describe('SummaryPanel', () => {
   const defaultProps = {
     intl: {},
@@ -41,7 +38,7 @@ describe('SummaryPanel', () => {
 
   const getPanel = async () => {
     await act(async () => render((
-      <Router history={history}>
+      <Router>
         <IntlProvider locale="en">
           <VerifiedNameContext.Provider value={verifiedNameContextValue}>
             <IdVerificationContext.Provider value={appContextValue}>
@@ -61,16 +58,14 @@ describe('SummaryPanel', () => {
     await getPanel();
     const button = await screen.findByTestId('portrait-retake');
     fireEvent.click(button);
-    expect(history.location.pathname).toEqual('/take-portrait-photo');
-    expect(history.location.state.fromSummary).toEqual(true);
+    expect(window.location.pathname).toEqual('/id-verification/take-portrait-photo');
   });
 
   it('routes back to TakeIdPhotoPanel', async () => {
     await getPanel();
     const button = await screen.findByTestId('id-retake');
     fireEvent.click(button);
-    expect(history.location.pathname).toEqual('/take-id-photo');
-    expect(history.location.state.fromSummary).toEqual(true);
+    expect(window.location.pathname).toEqual('/id-verification/take-id-photo');
   });
 
   it('allows user to upload ID photo', async () => {

@@ -1,5 +1,5 @@
 import { AppContext } from '@edx/frontend-platform/react';
-import { getConfig, history, getQueryParameters } from '@edx/frontend-platform';
+import { getConfig, getQueryParameters } from '@edx/frontend-platform';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -48,21 +48,15 @@ import {
   getStatesList,
 } from './data/constants';
 import { fetchSiteLanguages } from './site-language';
-import CoachingToggle from './coaching/CoachingToggle';
 import DemographicsSection from './demographics/DemographicsSection';
+import { fetchCourseList } from '../notification-preferences/data/thunks';
+import { withLocation, withNavigate } from './hoc';
 
 class AccountSettingsPage extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    // If there is a "duplicate_provider" query parameter, that's the backend's
-    // way of telling us that the provider account the user tried to link is already linked
-    // to another user account on the platform. We use this to display a message to that effect,
-    // and remove the parameter from the URL.
     const duplicateTpaProvider = getQueryParameters().duplicate_provider;
-    if (duplicateTpaProvider !== undefined) {
-      history.replace(history.location.pathname);
-    }
     this.state = {
       duplicateTpaProvider,
     };
@@ -79,8 +73,9 @@ class AccountSettingsPage extends React.Component {
   }
 
   componentDidMount() {
+    this.props.fetchCourseList();
     this.props.fetchSettings();
-    this.props.fetchSiteLanguages();
+    this.props.fetchSiteLanguages(this.props.navigate);
     sendTrackingLogEvent('edx.user.settings.viewed', {
       page: 'account',
       visibility: null,
@@ -199,6 +194,12 @@ class AccountSettingsPage extends React.Component {
     if (!this.state.duplicateTpaProvider) {
       return null;
     }
+
+    // If there is a "duplicate_provider" query parameter, that's the backend's
+    // way of telling us that the provider account the user tried to link is already linked
+    // to another user account on the platform. We use this to display a message to that effect,
+    // and remove the parameter from the URL.
+    this.props.navigate(this.props.location, { replace: true });
 
     return (
       <div>
@@ -683,15 +684,6 @@ class AccountSettingsPage extends React.Component {
             emptyLabel={this.props.intl.formatMessage(messages['account.settings.field.language.proficiencies.empty'])}
             {...editableFieldProps}
           />
-          {getConfig().COACHING_ENABLED
-            && this.props.formValues.coaching.eligible_for_coaching
-            && (
-            <CoachingToggle
-              name="coaching"
-              phone_number={this.props.formValues.phone_number}
-              coaching={this.props.formValues.coaching}
-            />
-            )}
         </div>
         {getConfig().ENABLE_DEMOGRAPHICS_COLLECTION && this.renderDemographicsSection()}
         <div className="account-section pt-3 mb-5" id="social-media">
@@ -773,13 +765,15 @@ class AccountSettingsPage extends React.Component {
           <ThirdPartyAuth />
         </div>
 
-        {/* <div className="account-section pt-3 mb-5" id="delete-account" ref={this.navLinkRefs['#delete-account']}>
-          <DeleteAccount
-            isVerifiedAccount={this.props.isActive}
-            hasLinkedTPA={hasLinkedTPA}
-          />
-        </div> */}
-
+        {getConfig().ENABLE_ACCOUNT_DELETION
+          && (
+          <div className="account-section pt-3 mb-5" id="delete-account" ref={this.navLinkRefs['#delete-account']}>
+            <DeleteAccount
+              isVerifiedAccount={this.props.isActive}
+              hasLinkedTPA={hasLinkedTPA}
+            />
+          </div>
+          )}
       </>
     );
   }
@@ -815,12 +809,12 @@ class AccountSettingsPage extends React.Component {
         </h1>
         <div>
           <div className="row">
-            <div className="col-md-3">
+            <div className="col-md-2">
               <JumpNav
                 displayDemographicsLink={this.props.formValues.shouldDisplayDemographicsSection}
               />
             </div>
-            <div className="col-md-9">
+            <div className="col-md-10">
               {loading ? this.renderLoading() : null}
               {loaded ? this.renderContent() : null}
               {loadingError ? this.renderError() : null}
@@ -858,11 +852,6 @@ AccountSettingsPage.propTypes = {
     social_link_facebook: PropTypes.string,
     social_link_twitter: PropTypes.string,
     time_zone: PropTypes.string,
-    coaching: PropTypes.shape({
-      coaching_consent: PropTypes.bool.isRequired,
-      user: PropTypes.number.isRequired,
-      eligible_for_coaching: PropTypes.bool.isRequired,
-    }),
     state: PropTypes.string,
     shouldDisplayDemographicsSection: PropTypes.bool,
     useVerifiedNameForCerts: PropTypes.bool.isRequired,
@@ -904,6 +893,7 @@ AccountSettingsPage.propTypes = {
   saveSettings: PropTypes.func.isRequired,
   fetchSettings: PropTypes.func.isRequired,
   beginNameChange: PropTypes.func.isRequired,
+  fetchCourseList: PropTypes.func.isRequired,
   tpaProviders: PropTypes.arrayOf(PropTypes.shape({
     connected: PropTypes.bool,
   })),
@@ -927,6 +917,8 @@ AccountSettingsPage.propTypes = {
       proctored_exam_attempt_id: PropTypes.number,
     }),
   ),
+  navigate: PropTypes.func.isRequired,
+  location: PropTypes.string.isRequired,
 };
 
 AccountSettingsPage.defaultProps = {
@@ -954,11 +946,12 @@ AccountSettingsPage.defaultProps = {
   verifiedNameHistory: [],
 };
 
-export default connect(accountSettingsPageSelector, {
+export default withLocation(withNavigate(connect(accountSettingsPageSelector, {
+  fetchCourseList,
   fetchSettings,
   saveSettings,
   saveMultipleSettings,
   updateDraft,
   fetchSiteLanguages,
   beginNameChange,
-})(injectIntl(AccountSettingsPage));
+})(injectIntl(AccountSettingsPage))));

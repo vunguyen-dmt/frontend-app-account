@@ -1,3 +1,6 @@
+import { messages as headerMessages } from '@edx/frontend-component-header';
+import { messages as footerMessages } from '@edx/frontend-component-footer';
+import { messages as paragonMessages } from '@edx/paragon';
 import arMessages from './messages/ar.json';
 import deMessages from './messages/de.json';
 import es419Messages from './messages/es_419.json';
@@ -17,7 +20,7 @@ import viMessages from './messages/vi.json';
 
 // no need to import en messages-- they are in the defaultMessage field
 
-const messages = {
+const appMessages = {
   ar: arMessages,
   'es-419': es419Messages,
   'fa-ir': faIRMessages,
@@ -36,4 +39,9 @@ const messages = {
   vi: viMessages,
 };
 
-export default messages;
+export default [
+  headerMessages,
+  paragonMessages,
+  footerMessages,
+  appMessages,
+];
