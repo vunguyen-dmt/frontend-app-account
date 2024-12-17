@@ -138,7 +138,7 @@ export const staticFieldsSelector = createSelector(
   mostRecentVerifiedNameSelector,
   (accountSettings, verifiedName) => {
     const staticFields = [];
-    if (accountSettings.profileDataManager) {
+    if (true || accountSettings.profileDataManager) {
       staticFields.push('name', 'email', 'country');
     }
     if (verifiedName && ['submitted'].includes(verifiedName.status)) {
