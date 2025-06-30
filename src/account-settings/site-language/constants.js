@@ -70,6 +70,11 @@ const siteLanguageList = [
     released: false,
   },
   {
+    code: 'vi',
+    name: 'Tiếng Việt',
+    released: false,
+  },
+  {
     code: 'zh-cn',
     name: '中文 (简体)',
     released: true,
