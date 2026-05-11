@@ -129,6 +129,11 @@ const siteLanguageList = [
     name: 'Türkçe (Türkiye)',
     released: true,
   },
+  {
+    code: 'vi',
+    name: 'Tiếng Việt',
+    released: false,
+  },
 ];
 
 export default siteLanguageList;
